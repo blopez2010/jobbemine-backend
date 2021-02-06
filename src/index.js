@@ -1,12 +1,19 @@
-const { ApolloServer, makeExecutableSchema } = require('apollo-server');
+const { ApolloServer, makeExecutableSchema, AuthenticationError } = require('apollo-server');
 const { importSchema } = require('graphql-import');
 require('dotenv').config();
 const path = require('path');
+const { isTokenValid } = require('./authentication');
 
 const resolvers = {
   Query: {
-    getGreetings: () => ({ greeting: 'Hello' }),
-  }
+    getGreetings: (_, {}, {isAuthenticated}) => {
+      if (isAuthenticated) {
+        return { greeting: 'Hello' };
+      }
+
+      throw new AuthenticationError('must authenticate');
+    },
+  },
 };
 
 const filePath = path.join(__dirname, './schema/schema.graphql');
@@ -22,6 +29,14 @@ const server = new ApolloServer({
   cors: {
     origin: '*',
     credentials: true,
+  },
+  context: ({ req }) => {
+    const token = req.headers.authorization;
+
+    return {
+      token,
+      isAuthenticated: !!isTokenValid(token),
+    };
   },
 });
 

@@ -12,6 +12,9 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
+      "env": {
+        "JBM_BYPASS_AUTHORIZATION": "true"
+      },
       "type": "pwa-node"
     },
     
