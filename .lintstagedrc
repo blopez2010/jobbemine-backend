@@ -1,0 +1,6 @@
+{
+  "**/*.{js,json}": [
+    "eslint ./src/** -c .eslintrc --fix --ext js --no-error-on-unmatched-pattern",
+    "git add"
+  ]
+}
