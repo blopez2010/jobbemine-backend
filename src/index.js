@@ -1,18 +1,13 @@
-const { ApolloServer, makeExecutableSchema, AuthenticationError } = require('apollo-server');
+const { ApolloServer, makeExecutableSchema } = require('apollo-server');
 const { importSchema } = require('graphql-import');
 require('dotenv').config();
 const path = require('path');
 const { isTokenValid } = require('./authentication');
+const queries = require('./queries');
 
 const resolvers = {
   Query: {
-    getGreetings: (_, {}, { isAuthenticated }) => {
-      if (isAuthenticated) {
-        return { greeting: 'Hello' };
-      }
-
-      throw new AuthenticationError('must authenticate');
-    },
+    ...queries
   },
 };
 
