@@ -6,7 +6,7 @@ const { isTokenValid } = require('./authentication');
 
 const resolvers = {
   Query: {
-    getGreetings: (_, {}, {isAuthenticated}) => {
+    getGreetings: (_, {}, { isAuthenticated }) => {
       if (isAuthenticated) {
         return { greeting: 'Hello' };
       }

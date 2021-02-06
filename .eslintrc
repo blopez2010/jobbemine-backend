@@ -8,6 +8,8 @@
     "no-console": 0,
     "no-underscore-dangle": 0,
     "no-unused-vars": "off",
+    "eqeqeq": "off",
+    "no-empty-pattern": "off",
     "no-use-before-define": ["error", {
       "variables": false
     }],
