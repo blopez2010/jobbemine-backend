@@ -1,61 +1,93 @@
 type Query {
-  getOpportunities(offset: Int!, size: Int!): OpportunityPayload!
+  getOpportunities(offset: Int!, size: Int!): OpportunityPayload
+  getPeople(offset: Int!, size: Int!): PeoplePayload
 }
 
 type OpportunityPayload implements PayloadBase {
   offset: Int
-  results: [OpportunityResult!]!
+  results: [OpportunityResultInput!]!
   size: Int
   total: Int
 }
 
-type OpportunityResult {
+type PeoplePayload implements PayloadBase {
+  offset: Int
+  results: [PeopleInput!]!
+  size: Int
+  total: Int 
+}
+
+type PeopleInput {
+  context: [ContextInput]
+  _meta: PeopleMetaInput
+  compensations: PeopleCompensationInput
+  locationName: String!
+  name: String!
+  openTo: [String]
+  picture: String
+  professionalHeadline: String!
+  remoter: Boolean!
+  skills: [SkillInput]
+  subjectId: String!
+  username: String!
+  verified: Boolean!
+  weight: Float
+}
+
+type OpportunityResultInput {
   id: String!
   objective: String!
   type: String!
-  organizations: [Organization!]
+  organizations: [OrganizationInput!]
   locations: [String!]
   remote: Boolean!
   external: Boolean!
   deadline: String!
   status: String!
-  compensation: CompensationData!
-  skills: [Skill!]
-  members: [Member!]
-  questions: [Question!]
-  context: [Context]
+  compensation: CompensationDataInput!
+  skills: [SkillInput!]
+  members: [MemberInput!]
+  questions: [QuestionInput!]
+  context: [ContextInput]
   _meta: Meta!
 }
 
-type Context {
+type ContextInput {
   signaled: [String]
 }
 
-type CompensationData {
-  data: Compensation!
+type CompensationDataInput {
+  data: CompensationInput!
   visible: Boolean!
 }
 
-type Compensation {
-  code: String!
-  currency: String!
-  minAmount: Float!
-  maxAmount: Float!
-  period: String!
+type PeopleCompensationInput {
+  freelancer: CompensationInput
+  employees: CompensationInput
 }
 
-type Organization {
+type CompensationInput {
+  code: String
+  currency: String!
+  minAmount: Float
+  maxAmount: Float
+  periodicity: String!
+  amount: Float
+}
+
+type OrganizationInput {
   id: Int!
   name: String!
   picture: String!
 }
 
-type Skill {
+type SkillInput {
   name: String!
-  experience: String!
+  experience: String
+  weight: Float
 }
 
-type Member {
+type MemberInput {
   subjectId: String!
   name: String!
   username: String!
@@ -67,7 +99,7 @@ type Member {
   weight: Float!
 }
 
-type Question {
+type QuestionInput {
   id: String!
   text: String!
   date: String!
@@ -75,27 +107,45 @@ type Question {
 
 type Meta {
   rank: Float!
-  scorer: Scorer
+  scorer: ScorerInput
   filter: String
   boosters: [String]
 }
 
-type Scorer {
-  score: Float!
-  and: And
+type PeopleMetaInput {
+  rank: Float!
+  score: Float
+  And: PeopleAndInput
 }
 
-type And {
+type ScorerInput {
+  score: Float!
+  and: AndInput
+}
+
+type AndInput {
   id: String
+  input: Input
+}
+
+type PeopleAndInput {
+  rank: Float
+  scorer: String
+  score: Float
   input: Input
 }
 
 type Input {
   criteria: String
-  opportunity: Opportunity
+  opportunity: OpportunityInput
+  person: PersonInput
 }
 
-type Opportunity {
+type PersonInput {
+  weight: Float!
+}
+
+type OpportunityInput {
   completion: Float
 }
 
