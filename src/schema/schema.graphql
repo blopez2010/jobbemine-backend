@@ -1,7 +1,106 @@
 type Query {
-  getGreetings: Greeting
+  getOpportunities(offset: Int!, size: Int!): OpportunityPayload!
 }
 
-type Greeting {
-  greeting: String
+type OpportunityPayload implements PayloadBase {
+  offset: Int
+  results: [OpportunityResult!]!
+  size: Int
+  total: Int
+}
+
+type OpportunityResult {
+  id: String!
+  objective: String!
+  type: String!
+  organizations: [Organization!]
+  locations: [String!]
+  remote: Boolean!
+  external: Boolean!
+  deadline: String!
+  status: String!
+  compensation: CompensationData!
+  skills: [Skill!]
+  members: [Member!]
+  questions: [Question!]
+  context: [Context]
+  _meta: Meta!
+}
+
+type Context {
+  signaled: [String]
+}
+
+type CompensationData {
+  data: Compensation!
+  visible: Boolean!
+}
+
+type Compensation {
+  code: String!
+  currency: String!
+  minAmount: Float!
+  maxAmount: Float!
+  period: String!
+}
+
+type Organization {
+  id: Int!
+  name: String!
+  picture: String!
+}
+
+type Skill {
+  name: String!
+  experience: String!
+}
+
+type Member {
+  subjectId: String!
+  name: String!
+  username: String!
+  professionalHeadline: String!
+  picture: String!
+  member: Boolean!
+  manager: Boolean!
+  posters: Boolean!
+  weight: Float!
+}
+
+type Question {
+  id: String!
+  text: String!
+  date: String!
+}
+
+type Meta {
+  rank: Float!
+  scorer: Scorer
+  filter: String
+  boosters: [String]
+}
+
+type Scorer {
+  score: Float!
+  and: And
+}
+
+type And {
+  id: String
+  input: Input
+}
+
+type Input {
+  criteria: String
+  opportunity: Opportunity
+}
+
+type Opportunity {
+  completion: Float
+}
+
+interface PayloadBase {
+  offset: Int
+  size: Int
+  total: Int
 }
