@@ -1,7 +1,8 @@
 type Query {
-  getOpportunities(offset: Int!, size: Int!): OpportunityResultPayload
-  getPeople(offset: Int!, size: Int!): PeopleResultPayload
+  getOpportunities(offset: Int! size: Int!): OpportunityResultPayload
+  getPeople(offset: Int! size: Int!): PeopleResultPayload
   getOpportunityById(id: String!): OpportunityPayload
+  getBioByUsername(username: String!): BiosPayload
 }
 
 type OpportunityResultPayload implements PayloadBase {
@@ -50,7 +51,22 @@ type PeopleResultPayload implements PayloadBase {
   offset: Int
   results: [PeopleInput!]!
   size: Int
-  total: Int 
+  total: Int
+}
+
+type BiosPayload {
+  person: PersonDataBiosInput
+  stats: [StatsDataBiosInput]
+  strengths: [StrengthsDataBiosInput]
+  interests: [InterestsDataBiosInput]
+  experiences: [ExperienceDataBiosInput]
+  awards: [AwardDataBiosInput]
+  jobs: [JobDataBiosInput]
+  education: [EducationDataBiosInput]
+  opportunities: [OpportunityDataBiosInput]
+  languages: [LanguageDataInput]
+  personalityTraitsResults: [PersonalityTraitResult]
+  professionalCultureGenomeResults: [ProfessionalCultureGenomeResult]
 }
 
 type PeopleInput {
@@ -222,7 +238,7 @@ type PersonInput {
   id: String!
   username: String!
   name: String!
-  hasEmail: String!
+  hasEmail: Boolean!
   professionalHeadline: String!
   picture: String
   pictureThumbnail: String
@@ -231,6 +247,223 @@ type PersonInput {
   weight: Int
   verified: Boolean!
   subjectId: Int
+}
+
+type PersonDataBiosInput {
+  id: String!
+  professionalHeadline: String!
+  completion: Int
+  showPhone: Boolean!
+  verified: Boolean!
+  flags: FlagsInput!
+  weight: Int
+  locale: String!
+  subjectId: Int
+  picture: String
+  hasEmail: Boolean!
+  isTest: Boolean!
+  name: String!
+  links: [LinkInput]
+  location: LocationInput
+  theme: String
+  pictureThumbnail: String
+  claimant: Boolean!
+  summaryOfBio: String
+  weightGraph: String
+  publicId: String!
+  created: String!
+}
+
+type StatsDataBiosInput {
+  strengths: Int
+  awards: Int
+  education: Int
+  interests: Int
+  jobs: Int
+}
+
+type StrengthsDataBiosInput {
+  id: String!
+  code: Int!
+  name: String!
+  weight: Int
+  recommendations: Int 
+  created: String!
+}
+
+type InterestsDataBiosInput {
+  id: String!
+  code: Int
+  name: String!
+  created: String!
+}
+
+interface BiosBasicInput {
+  id: String!
+  category: String!
+  name: String!
+  organizations: [OrganizationInput]
+  responsibilities: [String]
+  fromMonth: String
+  fromYear: String
+  toMonth: String
+  toYear: String
+  highlighted: Boolean!
+  weight: Int
+  verifications: Int
+  recommendations: Int
+  rank: Int!
+}
+
+type ExperienceDataBiosInput implements BiosBasicInput {
+  id: String!
+  category: String!
+  name: String!
+  organizations: [OrganizationInput]
+  responsibilities: [String]
+  fromMonth: String
+  fromYear: String
+  toMonth: String
+  toYear: String
+  highlighted: Boolean!
+  weight: Int
+  verifications: Int
+  recommendations: Int
+  rank: Int!
+}
+
+type AwardDataBiosInput implements BiosBasicInput {
+  id: String!
+  category: String!
+  name: String!
+  organizations: [OrganizationInput]
+  responsibilities: [String]
+  fromMonth: String
+  fromYear: String
+  toMonth: String
+  toYear: String
+  highlighted: Boolean!
+  weight: Int
+  verifications: Int
+  recommendations: Int
+  rank: Int!
+}
+
+type JobDataBiosInput implements BiosBasicInput {
+  id: String!
+  category: String!
+  name: String!
+  organizations: [OrganizationInput]
+  responsibilities: [String]
+  fromMonth: String
+  fromYear: String
+  toMonth: String
+  toYear: String
+  highlighted: Boolean!
+  weight: Int
+  verifications: Int
+  recommendations: Int
+  rank: Int!
+  additionalInfo: String
+  remote: Boolean
+}
+
+type EducationDataBiosInput implements BiosBasicInput {
+  id: String!
+  category: String!
+  name: String!
+  organizations: [OrganizationInput]
+  responsibilities: [String]
+  fromMonth: String
+  fromYear: String
+  toMonth: String
+  toYear: String
+  highlighted: Boolean!
+  weight: Int
+  verifications: Int
+  recommendations: Int
+  rank: Int!
+  additionalInfo: String
+  remote: Boolean
+}
+
+type LinkInput {
+  id: String!
+  name: String!
+  address: String!
+}
+
+type FlagsInput {
+  benefits: Boolean!
+  canary: Boolean!
+  enlauSource: Boolean!
+  fake: Boolean!
+  featureDiscovery: Boolean!
+  getSignaledBenefitsViewed: Boolean!
+  firstSignalSent: Boolean!
+  promoteYourselfBenefitsViewed: Boolean!
+  promoteYourselfCompleted: Boolean!
+  importingLinkedin: Boolean!
+  onBoarded: Boolean!
+  remoter: Boolean!
+  signalsFeatureDiscovery: Boolean!
+  signedInToOpportunities: Boolean!
+  importingLinkedinRecommendations: Boolean!
+  contactsImported: Boolean!
+  appContactsImported: Boolean!
+  genomeCompletionAcknowledged: Boolean!
+}
+
+type LocationInput {
+  name: String!
+  shortName: String!
+  country: String!
+  latitude: Float
+  longitude: Float
+  timezone: String!
+  timezoneOffSet: Int!
+}
+
+type OpportunityDataBiosInput {
+  id: String!
+  interest: String!
+  field: String!
+}
+
+type OpportunityDepartmentDataBiosInput {
+  code: Int!
+  locale: String!
+  name: String!
+}
+
+type PersonalityTraitResult {
+  groups: [PersonalityTraitGroup]
+  analyses: [Analysis]
+}
+
+type ProfessionalCultureGenomeResult {
+  groups: [professionalCultureGenomeGroup]
+  analyses: [Analysis]
+}
+
+type PersonalityTraitGroup {
+  id: String!
+  order: Int
+  median: Float
+  stddev: Float
+}
+
+type professionalCultureGenomeGroup {
+  id: String!
+  text: String!
+  answer: String
+  order: Int
+}
+
+type Analysis {
+  groupId: String!
+  section: String
+  analysis: Float
 }
 
 type DetailInput {
@@ -284,6 +517,7 @@ type IdentifierInput {
 }
 
 type LanguageDataInput {
+  code: String
   language: LanguageInput!
   fluency: String!
 }
@@ -293,7 +527,7 @@ type LanguageInput {
   name: String!
 }
 
-type CommitmentInput  {
+type CommitmentInput {
   code: String!
   hours: Int
 }
