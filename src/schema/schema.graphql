@@ -1,11 +1,12 @@
 type Query {
   getOpportunities(offset: Int! size: Int!): OpportunityResultPayload
+  getOpportunitiesAggregators: AggregatorsPayload
   getPeople(offset: Int! size: Int!): PeopleResultPayload
   getOpportunityById(id: String!): OpportunityPayload
   getBioByUsername(username: String!): BiosPayload
 }
 
-type OpportunityResultPayload implements PayloadBase {
+type OpportunityResultPayload implements IPayloadBase {
   offset: Int
   results: [OpportunityResultInput!]!
   size: Int
@@ -47,7 +48,7 @@ type OpportunityPayload {
   status: String!
 }
 
-type PeopleResultPayload implements PayloadBase {
+type PeopleResultPayload implements IPayloadBase {
   offset: Int
   results: [PeopleInput!]!
   size: Int
@@ -67,6 +68,52 @@ type BiosPayload {
   languages: [LanguageDataInput]
   personalityTraitsResults: [PersonalityTraitResult]
   professionalCultureGenomeResults: [ProfessionalCultureGenomeResult]
+}
+
+type AggregatorsPayload implements IPayloadBase {
+  aggregators: AggregatorsInput
+  offset: Int
+  size: Int
+  total: Int
+}
+
+type AggregatorsInput {
+  remote: [AggregateRemoteInput]
+  organization: [AggregateOrganizationInput]
+  skill: [AggregateSkillInput]
+  compensationrange: [AggregateCompensationRangeInput]
+  type: [AggregateTypeInput]
+  status: [AggregateStatusInput]
+}
+
+type AggregateRemoteInput implements IAggregateBase {
+  total: Int!
+  value: String!
+}
+
+type AggregateOrganizationInput implements IAggregateBase {
+  total: Int!
+  value: String!
+}
+
+type AggregateSkillInput implements IAggregateBase {
+  total: Int!
+  value: String!
+}
+
+type AggregateCompensationRangeInput implements IAggregateBase {
+  total: Int!
+  value: String!
+}
+
+type AggregateTypeInput implements IAggregateBase {
+  total: Int!
+  value: String!
+}
+
+type AggregateStatusInput implements IAggregateBase {
+  total: Int!
+  value: String!
 }
 
 type PeopleInput {
@@ -298,7 +345,7 @@ type InterestsDataBiosInput {
   created: String!
 }
 
-interface BiosBasicInput {
+interface IBiosBasicInput {
   id: String!
   category: String!
   name: String!
@@ -315,7 +362,7 @@ interface BiosBasicInput {
   rank: Int!
 }
 
-type ExperienceDataBiosInput implements BiosBasicInput {
+type ExperienceDataBiosInput implements IBiosBasicInput {
   id: String!
   category: String!
   name: String!
@@ -332,7 +379,7 @@ type ExperienceDataBiosInput implements BiosBasicInput {
   rank: Int!
 }
 
-type AwardDataBiosInput implements BiosBasicInput {
+type AwardDataBiosInput implements IBiosBasicInput {
   id: String!
   category: String!
   name: String!
@@ -349,7 +396,7 @@ type AwardDataBiosInput implements BiosBasicInput {
   rank: Int!
 }
 
-type JobDataBiosInput implements BiosBasicInput {
+type JobDataBiosInput implements IBiosBasicInput {
   id: String!
   category: String!
   name: String!
@@ -368,7 +415,7 @@ type JobDataBiosInput implements BiosBasicInput {
   remote: Boolean
 }
 
-type EducationDataBiosInput implements BiosBasicInput {
+type EducationDataBiosInput implements IBiosBasicInput {
   id: String!
   category: String!
   name: String!
@@ -539,8 +586,13 @@ type StrengthsInput {
   experience: String!
 }
 
-interface PayloadBase {
+interface IPayloadBase {
   offset: Int
   size: Int
   total: Int
+}
+
+interface IAggregateBase {
+  total: Int!
+  value: String!
 }
