@@ -1,8 +1,9 @@
 type Query {
   getOpportunities(offset: Int! size: Int!): OpportunityResultPayload
-  getOpportunitiesAggregators: AggregatorsPayload
-  getPeople(offset: Int! size: Int!): PeopleResultPayload
+  getOpportunitiesAggregators: OpportunitiesAggregatorsPayload
   getOpportunityById(id: String!): OpportunityPayload
+  getPeople(offset: Int! size: Int!): PeopleResultPayload
+  getPeopleAggregators: PeopleAggregatorsPayload
   getBioByUsername(username: String!): BiosPayload
 }
 
@@ -70,20 +71,51 @@ type BiosPayload {
   professionalCultureGenomeResults: [ProfessionalCultureGenomeResult]
 }
 
-type AggregatorsPayload implements IPayloadBase {
-  aggregators: AggregatorsInput
+type PeopleAggregatorsPayload implements IPayloadBase {
+  aggregators: PeopleAggregatorsInput
   offset: Int
   size: Int
   total: Int
 }
 
-type AggregatorsInput {
+type OpportunitiesAggregatorsPayload implements IPayloadBase {
+  aggregators: OpportunitiesAggregatorsInput
+  offset: Int
+  size: Int
+  total: Int
+}
+
+type PeopleAggregatorsInput {
+  remoter: [AggregateRemoterInput]
+  opento: [AggregateOpenToInput]
+  skill: [AggregateSkillInput]
+  compensationrange: [AggregateCompensationRangeInput]
+  type: [AggregateTypeInput]
+  status: [AggregateStatusInput]
+}
+
+type OpportunitiesAggregatorsInput {
   remote: [AggregateRemoteInput]
   organization: [AggregateOrganizationInput]
   skill: [AggregateSkillInput]
   compensationrange: [AggregateCompensationRangeInput]
   type: [AggregateTypeInput]
   status: [AggregateStatusInput]
+}
+
+type AggregateRemoterInput implements IAggregateBase {
+  total: Int!
+  value: String!
+}
+
+type AggregateOpenToInput implements IAggregateBase {
+  total: Int!
+  value: String!
+}
+
+type AggregateRemoteInput implements IAggregateBase {
+  total: Int!
+  value: String!
 }
 
 type AggregateRemoteInput implements IAggregateBase {
