@@ -22,4 +22,16 @@ module.exports = {
 
     return data;
   },
+  // eslint-disable-next-line no-empty-pattern
+  getOpportunitiesAggregators: async (_, {}, { isAuthenticated }) => {
+    if (!isAuthenticated) {
+      throw new AuthenticationError('must authenticate');
+    }
+
+    const { data } = await postData(
+      `${process.env.JBM_TORRE_API_URL}/opportunities/_search/?aggregate=true&offset=0&size=0`
+    );
+
+    return data;
+  }
 };
