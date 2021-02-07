@@ -1,14 +1,22 @@
-const { create } = require('axios');
-
-const { post, get } = create({
-  baseURL: process.env.JBM_TORRE_API_URL,
-  headers: {
-    'Content-type': 'application/json',
-    Accept: 'application/json',
-  },
-});
+const { get, post } = require('axios');
 
 module.exports = {
-  get,
-  post,
+  getData: url =>
+    get(url, {
+      headers: {
+        'Content-type': 'application/json',
+        Accept: 'application/json',
+      },
+    }),
+  postData: url =>
+    post(
+      url,
+      {},
+      {
+        headers: {
+          'Content-type': 'application/json',
+          Accept: 'application/json',
+        },
+      }
+    ),
 };
