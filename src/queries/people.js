@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server');
-const { post } = require('../axios');
+const { postData } = require('../axios');
 
 module.exports = {
   getPeople: async (_, { offset, size }, { isAuthenticated }) => {
@@ -7,9 +7,8 @@ module.exports = {
       throw new AuthenticationError('must authenticate');
     }
 
-    const { data } = await post(
-      `/people/_search/?offset=${offset}&size=${size}`,
-      {}
+    const { data } = await postData(
+      `${process.env.JBM_TORRE_API_URL}/people/_search/?offset=${offset}&size=${size}`
     );
 
     return data;

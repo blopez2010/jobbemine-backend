@@ -1,16 +1,52 @@
 type Query {
-  getOpportunities(offset: Int!, size: Int!): OpportunityPayload
-  getPeople(offset: Int!, size: Int!): PeoplePayload
+  getOpportunities(offset: Int!, size: Int!): OpportunityResultPayload
+  getPeople(offset: Int!, size: Int!): PeopleResultPayload
+  getOpportunityById(id: String!): OpportunityPayload
 }
 
-type OpportunityPayload implements PayloadBase {
+type OpportunityResultPayload implements PayloadBase {
   offset: Int
   results: [OpportunityResultInput!]!
   size: Int
   total: Int
 }
 
-type PeoplePayload implements PayloadBase {
+type OpportunityPayload {
+  id: String!
+  attachments: [AttachmentInput!]
+  boardVersion: Int!
+  prefilledStatus: PrefilledStatusInput
+  locale: String!
+  objective: String!
+  timeframe: TimeFrameInput
+  stats: StatsInput
+  review: String
+  draft: String
+  members: [MemberInput!]
+  details: [DetailInput!]
+  place: PlaceInput
+  deadline: String
+  slug: String
+  serpTags: SerpTagsInput
+  owners: MemberInput!
+  completion: Int
+  languages: [LanguageDataInput!]
+  created: String!
+  crawled: Boolean!
+  opportunity: String!
+  active: Boolean!
+  externalId: String
+  commitment: CommitmentInput
+  stableOn: String
+  timezones: [String]
+  strengths: [StrengthsInput]
+  organizations: [OrganizationInput]
+  compensation: CompensationInput
+  openGraph: String
+  status: String!
+}
+
+type PeopleResultPayload implements PayloadBase {
   offset: Int
   results: [PeopleInput!]!
   size: Int
@@ -69,15 +105,18 @@ type PeopleCompensationInput {
 type CompensationInput {
   code: String
   currency: String!
+  estimate: Boolean
   minAmount: Float
   maxAmount: Float
   periodicity: String!
   amount: Float
+  visible: Boolean
 }
 
 type OrganizationInput {
   id: Int!
   name: String!
+  size: Int
   picture: String!
 }
 
@@ -147,6 +186,123 @@ type PersonInput {
 
 type OpportunityInput {
   completion: Float
+}
+
+type AttachmentInput {
+  resource: String!
+  address: String!
+  path: String!
+  caption: String
+}
+
+type PrefilledStatusInput {
+  status: String!
+}
+
+type TimeFrameInput {
+  type: String!
+}
+
+type StatsInput {
+  finishedApplications: Int
+}
+
+type MemberInput {
+  id: String!
+  person: MemberInput
+  manager: Boolean!
+  poster: Boolean!
+  member: Boolean!
+  status: String
+  visible: Boolean!
+  screeningQuestionsTipClosed: Boolean!
+}
+
+type PersonInput {
+  id: String!
+  username: String!
+  name: String!
+  hasEmail: String!
+  professionalHeadline: String!
+  picture: String
+  pictureThumbnail: String
+  hasBio: Boolean!
+  bioCompletion: Int
+  weight: Int
+  verified: Boolean!
+  subjectId: Int
+}
+
+type DetailInput {
+  code: String!
+  content: String!
+}
+
+type PlaceInput {
+  remote: Boolean!
+  anywhere: Boolean!
+  timezone: Boolean!
+  location: [String]
+}
+
+type SerpTagsInput {
+  title: String!
+  description: String!
+  identifier: IdentifierInput
+  datePosted: String
+  employmentType: [String]
+  validThrough: String
+  HiringOrganizationType: HiringOrganizationTypeInput
+  jobLocationType: String!
+  applicantLocationRequirements: [ApplicantLocationRequirementInput]
+  baseSalary: BaseSalaryInput
+}
+
+type BaseSalaryInput {
+  currency: String!
+  value: ValueInput
+}
+
+type ValueInput {
+  minValue: Int
+  maxValue: Int
+  unitText: String!
+}
+
+type ApplicantLocationRequirementInput {
+  name: String!
+}
+
+type HiringOrganizationTypeInput {
+  name: String!
+  logo: String!
+}
+
+type IdentifierInput {
+  name: String!
+  value: String!
+}
+
+type LanguageDataInput {
+  language: LanguageInput!
+  fluency: String!
+}
+
+type LanguageInput {
+  code: String!
+  name: String!
+}
+
+type CommitmentInput  {
+  code: String!
+  hours: Int
+}
+
+type StrengthsInput {
+  id: String!
+  code: Int!
+  name: String!
+  experience: String!
 }
 
 interface PayloadBase {
