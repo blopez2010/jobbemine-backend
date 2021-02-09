@@ -188,7 +188,7 @@ type ContextInput {
 }
 
 type CompensationDataInput {
-  data: CompensationInput!
+  data: CompensationInput
   visible: Boolean!
 }
 
@@ -226,7 +226,7 @@ type MemberInput {
   name: String!
   username: String!
   professionalHeadline: String!
-  picture: String!
+  picture: String
   member: Boolean!
   manager: Boolean!
   posters: Boolean!
